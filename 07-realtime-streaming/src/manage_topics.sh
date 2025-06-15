@@ -6,6 +6,11 @@ BROKERS="s1:9092,s2:9092,s3:9092"
 create_topics() {
     echo "Creating Kafka topics..."
     
+    # FMS 실제 데이터용 토픽
+    kafka-topics.sh --create --topic fms-sensor-data \
+        --partitions 5 --replication-factor 2 \
+        --bootstrap-server $BROKERS
+    
     # 기본 테스트 토픽들
     kafka-topics.sh --create --topic test-topic --bootstrap-server $BROKERS
     kafka-topics.sh --create --topic input-topic --bootstrap-server $BROKERS

@@ -7,7 +7,7 @@
   - **Kafka Producer**: 센서 데이터 수집 및 Kafka로 전송
   - **Grafana**: 모니터링 대시보드 및 시각화 (:3000)
   - **Prometheus**: 메트릭 수집 및 저장 (:9090)
-  - **n8n**: 워크플로우 자동화 및 ETL 처리 (:5678)
+  - **n8n**: 워크플로우 자동화 및 ETL 처리 (:5678) (Optional)
   - **Ansible**: 클러스터 관리 및 자동화
 
 * **s1 (Master Node + Kafka Consumer)**
@@ -58,7 +58,7 @@ ansible-playbook --flush-cache -i /df/ansible-hadoop/hosts /df/ansible-hadoop/ha
 ```
 
 **설치 과정**:
-- Java 11 OpenJDK 환경 구성
+- Java 18 OpenJDK 환경 구성
 - Hadoop 3.3.6 바이너리 배포
 - 클러스터 설정 파일 자동 생성
 - SSH 키 교환 및 권한 설정

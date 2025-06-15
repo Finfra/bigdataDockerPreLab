@@ -53,8 +53,42 @@ bash src/manage_topics.sh list
 bash src/manage_topics.sh describe sensor-data
 ```
 
+## 실제 FMS 데이터 수집 및 처리
+### 7.6 실제 API 데이터 Producer
+**실제 FMS 시스템**에서 센서 데이터를 수집하여 Kafka로 전송:
+
+```bash
+# 필요한 패키지 설치
+cd src
+pip3 install -r requirements.txt
+
+# 테스트 실행 (한 번만)
+python3 fms_producer.py test
+
+# 연속 실행 (10초 간격으로 계속)
+python3 fms_producer.py
+```
+
+**API 정보**:
+- **엔드포인트**: `http://finfra.iptime.org:9872/{DeviceId}/`
+- **장비 범위**: DeviceId 1~5 (총 5개 장비)
+- **갱신 주기**: 10초마다 자동 수집
+- **데이터 구조**: 센서값(sensor1~3), 모터값(motor1~3), 장애상태(isFail)
+
+### 7.7 실제 데이터 분석 Consumer
+```bash
+# 실제 FMS 데이터 분석 (터미널 2에서)
+python3 fms_consumer.py
+```
+
+**분석 기능**:
+- 센서 평균값 계산
+- 임계값 초과 알림 (센서 >90, 모터 >1500)
+- 장비 실패 상태 모니터링
+- 실시간 상태 분류 (NORMAL/CRITICAL)
+
 ## 기본 Producer/Consumer 테스트
-### 7.6 콘솔 기반 테스트
+### 7.8 콘솔 기반 테스트
 ```bash
 # Producer (터미널 1)
 kafka-console-producer.sh --topic test-topic --bootstrap-server s1:9092
@@ -63,7 +97,7 @@ kafka-console-producer.sh --topic test-topic --bootstrap-server s1:9092
 kafka-console-consumer.sh --topic test-topic --from-beginning --bootstrap-server s1:9092
 ```
 
-### 7.7 Python 클라이언트 테스트
+### 7.9 Python 클라이언트 테스트
 기본 메시지 생성:
 ```bash
 cd src
@@ -73,7 +107,7 @@ python3 producer.py
 **상세 구현**: `src/producer.py`, `src/filter.py`, `src/filtered_consumer.py` 참조
 
 ## 고급 메시지 처리
-### 7.8 메시지 필터링 파이프라인
+### 7.10 메시지 필터링 파이프라인
 1. **Input Topic**: 원시 메시지 수신
 2. **Filter Process**: 특정 키워드 포함 메시지만 추출
 3. **Filtered Topic**: 필터링된 메시지 저장
@@ -86,7 +120,7 @@ python3 filtered_consumer.py &
 python3 producer.py
 ```
 
-### 7.9 고가용성 테스트
+### 7.11 고가용성 테스트
 ```bash
 # 복제본 포함 토픽으로 장애 복구 테스트
 kafka-console-producer.sh --topic replicated-topic --bootstrap-server s1:9092,s2:9092,s3:9092
@@ -97,7 +131,7 @@ kafka-console-consumer.sh --topic replicated-topic --bootstrap-server s1:9092,s2
 ```
 
 ## Spark Streaming 통합
-### 7.10 실시간 스트림 분석
+### 7.12 실시간 스트림 분석
 Spark에서 Kafka 데이터를 실시간으로 처리:
 
 ```python
@@ -111,7 +145,7 @@ df = spark.readStream \
 
 **완전한 구현**: `src/spark_streaming.py` 참조
 
-### 7.11 HDFS 저장
+### 7.13 HDFS 저장
 ```python
 # 스트리밍 데이터를 HDFS에 저장
 query = processed_df.writeStream \
@@ -122,7 +156,7 @@ query = processed_df.writeStream \
 ```
 
 ## 실시간 모니터링
-### 7.12 상태 확인 명령어
+### 7.14 상태 확인 명령어
 ```bash
 # Consumer 그룹 상태
 kafka-consumer-groups.sh --describe --all-groups --bootstrap-server s1:9092,s2:9092,s3:9092
@@ -134,7 +168,7 @@ kafka-topics.sh --describe --topic sensor-data --bootstrap-server s1:9092,s2:909
 # http://localhost:8080 웹 UI 접속
 ```
 
-### 7.13 문제 해결
+### 7.15 문제 해결
 ```bash
 # 로그 확인
 tail -f /opt/kafka/logs/server.log
@@ -145,13 +179,13 @@ bash src/manage_kafka.sh start
 ```
 
 ## 성능 최적화
-### 7.14 주요 설정 파라미터
+### 7.16 주요 설정 파라미터
 * **배치 크기**: 16KB (처리량 최적화)
 * **압축**: gzip (저장 공간 절약)
 * **파티션 수**: CPU 코어 수 × 2
 * **복제 인수**: 2 (고가용성)
 
-### 7.15 확장성 고려사항
+### 7.17 확장성 고려사항
 * **수평 확장**: Worker 노드 추가
 * **파티션 증가**: 높은 처리량 요구 시
 * **체크포인트**: 장애 복구용 상태 저장
@@ -173,14 +207,33 @@ bash src/manage_kafka.sh start
 bash src/manage_topics.sh create
 ```
 
-### 실습 2: 기본 메시지 흐름 테스트
+### 실습 2: 실제 FMS 데이터 수집 및 분석
+```bash
+# 1. 필요한 패키지 설치
+cd src
+pip3 install -r requirements.txt
+
+# 2. 실제 API 테스트
+python3 fms_producer.py test
+
+# 3. 실제 데이터 연속 수집 (터미널 1)
+python3 fms_producer.py
+
+# 4. 실시간 데이터 분석 (터미널 2)
+python3 fms_consumer.py
+
+# 5. 결과 확인
+# 센서 임계값 초과, 장비 장애 등 실시간 알림 확인
+```
+
+### 실습 3: 기본 메시지 흐름 테스트
 ```bash
 # Producer/Consumer 기본 테스트
 kafka-console-producer.sh --topic test-topic --bootstrap-server s1:9092
 kafka-console-consumer.sh --topic test-topic --from-beginning --bootstrap-server s1:9092
 ```
 
-### 실습 3: Python 메시지 필터링
+### 실습 4: Python 메시지 필터링
 ```bash
 cd src
 # 백그라운드에서 필터링 프로세스 시작
@@ -191,14 +244,14 @@ python3 filtered_consumer.py &
 python3 producer.py
 ```
 
-### 실습 4: Spark Streaming 통합
+### 실습 5: Spark Streaming 통합
 ```bash
 # Spark에서 Kafka 스트림 처리
 cd src
 spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.0 spark_streaming.py
 ```
 
-### 실습 5: 고가용성 테스트
+### 실습 6: 고가용성 테스트
 ```bash
 # 복제본 토픽 테스트
 kafka-console-producer.sh --topic replicated-topic --bootstrap-server s1:9092,s2:9092,s3:9092

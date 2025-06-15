@@ -2,6 +2,11 @@
 
 이 폴더에는 Kafka 클러스터 관리 및 메시지 처리를 위한 소스 코드들이 포함되어 있음.
 
+## 실제 FMS 시스템 연동
+* **fms_producer.py**: 실제 FMS API에서 센서 데이터 수집 및 Kafka 전송
+* **fms_consumer.py**: 실제 FMS 데이터 실시간 분석 및 알림
+* **requirements.txt**: 필요한 Python 패키지 목록
+
 ## Python 클라이언트
 * **producer.py**: 기본 메시지 생성 및 Kafka 전송
 * **filter.py**: 메시지 필터링 (특정 키워드 포함 메시지만 추출)
@@ -14,6 +19,24 @@
 * **manage_topics.sh**: Kafka 토픽 생성/관리/삭제
 
 ## 사용법
+
+### 환경 설정
+```bash
+# 필요한 패키지 설치
+pip3 install -r requirements.txt
+```
+
+### 실제 FMS 데이터 처리
+```bash
+# 실제 API 테스트
+python3 fms_producer.py test
+
+# 연속 데이터 수집 (10초 간격)
+python3 fms_producer.py
+
+# 실시간 데이터 분석
+python3 fms_consumer.py
+```
 
 ### Python 클라이언트 실행
 ```bash

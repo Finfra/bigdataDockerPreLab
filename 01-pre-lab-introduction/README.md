@@ -10,6 +10,9 @@
 * Kafka-Spark-HDFS 기반 실시간 데이터 파이프라인
 * Docker Compose 기반 클러스터 환경
 * 실시간 모니터링 대시보드 및 알림 시스템
+* 팀용 git hub repository(소스 및 보고서 ) : 비공개 계정 가능.
+* 
+
 
 ## Lab 주제 설명
 ### 2.1 FMS 시스템 개요
@@ -76,7 +79,8 @@
 
 ## 4. 실습 환경 테스트 및 검증 완료
 
-### 4.1 환경 체크 결과 ✅
+### 4.1 환경 체크 결과 예✅
+* windows환경에서는 수동으로 확인.
 ```bash
 # 환경 체크 실행
 ./check_environment.sh
@@ -91,7 +95,8 @@
 ⚠️ 포트 사용: 일부 포트 사용 중 (정상 범위)
 ```
 
-### 4.2 외부 API 서버 테스트 ✅
+### 4.2 외부 API 서버 테스트 예✅
+* windows환경에서는 수동으로 확인.
 ```bash
 # 외부 API 테스트
 python3 test_external_api.py
