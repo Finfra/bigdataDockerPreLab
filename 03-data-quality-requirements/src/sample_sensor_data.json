@@ -1,0 +1,11 @@
+{
+  "time": "2024-01-15T14:30:00Z",
+  "DeviceId": 1,
+  "sensor1": 85.2,
+  "sensor2": 92.7,
+  "sensor3": 78.5,
+  "motor1": 1200,
+  "motor2": 850,
+  "motor3": 1100,
+  "isFail": false
+}

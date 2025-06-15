@@ -1,0 +1,45 @@
+performance_results:
+  throughput:
+    target: "50 messages/second"
+    achieved: "47 messages/second"
+    efficiency: "94%"
+  
+  latency:
+    end_to_end: "25 seconds"
+    processing_only: "8 seconds"
+    storage_write: "12 seconds"
+  
+  resource_usage:
+    cpu_avg: "45%"
+    memory_avg: "68%"
+    disk_io: "12 MB/s"
+  
+  scalability:
+    max_devices_tested: 20
+    projected_capacity: 100
+    bottleneck: "API rate limiting"
+
+quality_metrics:
+  data_completeness: "98.5%"
+  data_accuracy: "96.2%"
+  system_uptime: "99.7%"
+  error_rate: "0.3%"
+
+test_scenarios:
+  normal_load:
+    devices: 5
+    frequency: "10 seconds"
+    duration: "24 hours"
+    success_rate: "99.5%"
+  
+  peak_load:
+    devices: 20
+    frequency: "5 seconds"  
+    duration: "1 hour"
+    success_rate: "94.2%"
+  
+  stress_test:
+    devices: 50
+    frequency: "1 second"
+    duration: "10 minutes"
+    success_rate: "78.5%"

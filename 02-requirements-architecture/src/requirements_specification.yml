@@ -1,0 +1,234 @@
+# 요구사항 명세서 (Requirements Specification)
+# BigData Docker Pre-Lab Project
+# 작성일: 2025-06-14
+
+project_info:
+  name: "FMS BigData Real-time Processing System"
+  version: "1.0.0"
+  description: "Factory Management System의 실시간 센서 데이터 처리 파이프라인"
+  stakeholders:
+    - "제조업체 IT팀"
+    - "설비 관리팀"
+    - "데이터 분석팀"
+    - "시스템 운영팀"
+
+# 기능적 요구사항 (Functional Requirements)
+functional_requirements:
+  data_collection:
+    - id: "FR-001"
+      priority: "High"
+      description: "5개 FMS 장비로부터 실시간 센서 데이터 수집"
+      acceptance_criteria:
+        - "10초 간격으로 데이터 수집"
+        - "API 호출 실패 시 최대 3회 재시도"
+        - "네트워크 장애 시 로컬 큐에 임시 저장"
+      
+    - id: "FR-002"
+      priority: "High"
+      description: "수집된 데이터의 무결성 검증"
+      acceptance_criteria:
+        - "필수 필드 존재 여부 확인"
+        - "데이터 타입 검증"
+        - "센서 값 범위 검증 (0-100, 0-2000)"
+
+  data_processing:
+    - id: "FR-003"
+      priority: "High"
+      description: "실시간 스트림 데이터 처리"
+      acceptance_criteria:
+        - "배치 인터벌 10초 이내"
+        - "이상치 탐지 및 플래깅"
+        - "장비별 통계 정보 생성"
+      
+    - id: "FR-004"
+      priority: "Medium"
+      description: "히스토리 데이터 배치 처리"
+      acceptance_criteria:
+        - "일일 집계 데이터 생성"
+        - "주간/월간 트렌드 분석"
+        - "장비 성능 지표 계산"
+
+  monitoring_alerting:
+    - id: "FR-005"
+      priority: "High"
+      description: "실시간 모니터링 대시보드"
+      acceptance_criteria:
+        - "5개 장비 상태 실시간 표시"
+        - "센서 값 실시간 차트"
+        - "알림 이력 관리"
+      
+    - id: "FR-006"
+      priority: "Critical"
+      description: "임계값 기반 자동 알림"
+      acceptance_criteria:
+        - "sensor 값 > 95도 시 경고 알림"
+        - "isFail=true 시 긴급 알림"
+        - "다중 채널 알림 (이메일, Slack)"
+
+# 비기능적 요구사항 (Non-Functional Requirements)
+non_functional_requirements:
+  performance:
+    - id: "NFR-001"
+      category: "Latency"
+      requirement: "엔드투엔드 지연시간 30초 이내"
+      measurement: "데이터 수집부터 대시보드 표시까지"
+      target_value: "< 30초"
+      
+    - id: "NFR-002"
+      category: "Throughput"
+      requirement: "초당 50개 메시지 처리"
+      measurement: "Kafka consumer throughput"
+      target_value: "> 50 msg/sec"
+      
+    - id: "NFR-003"
+      category: "Availability"
+      requirement: "시스템 가용성 99.5% 이상"
+      measurement: "월간 다운타임"
+      target_value: "< 3.6시간/월"
+
+  scalability:
+    - id: "NFR-004"
+      category: "Horizontal Scaling"
+      requirement: "장비 수 확장 가능"
+      measurement: "최대 동시 처리 가능 장비 수"
+      target_value: "100개 장비"
+      
+    - id: "NFR-005"
+      category: "Data Volume"
+      requirement: "대용량 데이터 처리"
+      measurement: "일일 처리 가능 데이터량"
+      target_value: "10GB/day"
+
+  reliability:
+    - id: "NFR-006"
+      category: "Fault Tolerance"
+      requirement: "단일 노드 장애 시 서비스 지속"
+      measurement: "복구 시간"
+      target_value: "< 5분"
+      
+    - id: "NFR-007"
+      category: "Data Durability"
+      requirement: "데이터 손실 방지"
+      measurement: "데이터 복제 수준"
+      target_value: "최소 2개 복제본"
+
+  security:
+    - id: "NFR-008"
+      category: "Access Control"
+      requirement: "접근 권한 관리"
+      measurement: "인증/인가 체계"
+      target_value: "역할 기반 접근 제어"
+      
+    - id: "NFR-009"
+      category: "Data Protection"
+      requirement: "민감 데이터 보호"
+      measurement: "암호화 적용 범위"
+      target_value: "전송/저장 시 암호화"
+
+# 제약사항 (Constraints)
+constraints:
+  technical:
+    - "Docker 컨테이너 기반 배포"
+    - "오픈소스 기술 스택 사용"
+    - "macOS/Ubuntu 22.04 환경 지원"
+    - "최소 8GB RAM, 50GB 디스크"
+    
+  business:
+    - "프로젝트 기간: 3일"
+    - "예산 제약: 무료/오픈소스만 사용"
+    - "팀 구성: 4인 이하"
+    
+  regulatory:
+    - "개인정보보호법 준수"
+    - "산업보안 가이드라인 준수"
+
+# 데이터 요구사항
+data_requirements:
+  input_data:
+    source: "FMS API (http://finfra.iptime.org:9872/{DeviceId}/)"
+    format: "JSON"
+    frequency: "10초 간격"
+    volume: "5 devices × 8760 hours/year = 1.58M records/year"
+    schema:
+      time: "ISO 8601 timestamp"
+      DeviceId: "integer (1-5)"
+      sensor1: "float (온도, 0-100°C)"
+      sensor2: "float (습도, 0-100%)"
+      sensor3: "float (압력, 0-100 PSI)"
+      motor1: "integer (메인모터 RPM, 0-2000)"
+      motor2: "integer (보조모터 RPM, 0-2000)"
+      motor3: "integer (냉각모터 RPM, 0-2000)"
+      isFail: "boolean (장애상태)"
+      
+  output_data:
+    processed_data:
+      format: "Parquet"
+      partitioning: "/year/month/day/hour/"
+      retention: "1년"
+      
+    aggregated_data:
+      daily_stats: "장비별 일일 통계"
+      hourly_trends: "시간별 트렌드 데이터"
+      alert_logs: "알림 이력 데이터"
+
+# 품질 요구사항 (Quality Requirements)
+quality_requirements:
+  data_quality:
+    completeness: "> 99% (필수 필드 누락 < 1%)"
+    accuracy: "> 95% (센서 값 범위 내)"
+    consistency: "> 98% (타임스탬프 순서 일관성)"
+    timeliness: "> 90% (10초 ± 2초 내 수집)"
+    
+  system_quality:
+    maintainability: "코드 복잡도 < 10 (Cyclomatic Complexity)"
+    testability: "단위 테스트 커버리지 > 80%"
+    monitorability: "핵심 메트릭 실시간 모니터링"
+    
+# 사용자 스토리 (User Stories)
+user_stories:
+  - id: "US-001"
+    as_a: "설비 관리자"
+    i_want: "실시간으로 5개 장비의 상태를 모니터링하고 싶다"
+    so_that: "장비 이상 시 즉시 대응할 수 있다"
+    acceptance_criteria:
+      - "대시보드에서 5개 장비 상태 동시 확인"
+      - "센서 값 실시간 업데이트 (10초 간격)"
+      - "장비 장애 시 즉시 알림 수신"
+      
+  - id: "US-002"
+    as_a: "데이터 분석가"
+    i_want: "히스토리 센서 데이터를 분석하고 싶다"
+    so_that: "설비 성능 트렌드와 예측 정보를 얻을 수 있다"
+    acceptance_criteria:
+      - "과거 데이터 SQL 쿼리 가능"
+      - "시계열 데이터 시각화"
+      - "통계 분석 결과 제공"
+      
+  - id: "US-003"
+    as_a: "시스템 운영자"
+    i_want: "파이프라인 상태를 모니터링하고 싶다"
+    so_that: "시스템 안정성을 확보할 수 있다"
+    acceptance_criteria:
+      - "처리량/지연시간 메트릭 확인"
+      - "에러율 및 장애 알림"
+      - "시스템 리소스 사용량 모니터링"
+
+# 테스트 시나리오 (Test Scenarios)
+test_scenarios:
+  functional_tests:
+    - "정상 데이터 수집 및 처리 테스트"
+    - "API 장애 시 재시도 로직 테스트"
+    - "이상치 데이터 탐지 테스트"
+    - "알림 전송 기능 테스트"
+    
+  performance_tests:
+    - "부하 테스트 (초당 100 메시지)"
+    - "지연시간 측정 테스트"
+    - "메모리 사용량 테스트"
+    - "동시 사용자 테스트"
+    
+  reliability_tests:
+    - "노드 장애 복구 테스트"
+    - "네트워크 분할 테스트"
+    - "데이터 일관성 테스트"
+    - "백업/복구 테스트"
