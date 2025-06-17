@@ -1,0 +1,170 @@
+# config.yaml
+# 장비별 센서 및 모터 평균값, 표준편차, 이상치 확률, -1 출력 확률 설정
+
+devices:
+  - id: 1
+    sensors:
+      sensor1:
+        mean: 80.0
+        stddev: 5.0
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor2:
+        mean: 90.0
+        stddev: 4.0
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor3:
+        mean: 75.0
+        stddev: 6.0
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+    motors:
+      motor1:
+        mean: 1200
+        stddev: 100
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor2:
+        mean: 850
+        stddev: 80
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor3:
+        mean: 1100
+        stddev: 90
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+  - id: 2
+    sensors:
+      sensor1:
+        mean: 82.0
+        stddev: 5.5
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor2:
+        mean: 88.0
+        stddev: 4.5
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor3:
+        mean: 77.0
+        stddev: 6.5
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+    motors:
+      motor1:
+        mean: 1180
+        stddev: 110
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor2:
+        mean: 870
+        stddev: 85
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor3:
+        mean: 1120
+        stddev: 95
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+  # id 3~5도 유사하게 설정 가능
+  - id: 3
+    sensors:
+      sensor1:
+        mean: 81.0
+        stddev: 5.2
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor2:
+        mean: 89.0
+        stddev: 4.2
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor3:
+        mean: 76.0
+        stddev: 6.1
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+    motors:
+      motor1:
+        mean: 1190
+        stddev: 105
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor2:
+        mean: 860
+        stddev: 82
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor3:
+        mean: 1110
+        stddev: 92
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+  - id: 4
+    sensors:
+      sensor1:
+        mean: 83.0
+        stddev: 5.3
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor2:
+        mean: 91.0
+        stddev: 4.3
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor3:
+        mean: 78.0
+        stddev: 6.3
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+    motors:
+      motor1:
+        mean: 1210
+        stddev: 108
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor2:
+        mean: 840
+        stddev: 83
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor3:
+        mean: 1130
+        stddev: 93
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+  - id: 5
+    sensors:
+      sensor1:
+        mean: 84.0
+        stddev: 5.4
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor2:
+        mean: 92.0
+        stddev: 4.4
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+      sensor3:
+        mean: 79.0
+        stddev: 6.4
+        outlier_prob: 0.05
+        minus_one_prob: 0.02
+    motors:
+      motor1:
+        mean: 1220
+        stddev: 109
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor2:
+        mean: 830
+        stddev: 84
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
+      motor3:
+        mean: 1140
+        stddev: 94
+        outlier_prob: 0.03
+        minus_one_prob: 0.01
